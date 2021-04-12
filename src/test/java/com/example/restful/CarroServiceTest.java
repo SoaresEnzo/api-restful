@@ -16,7 +16,7 @@ import static junit.framework.TestCase.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-class RestfulApplicationTests {
+class CarroServiceTest {
 
 	@Autowired
 	private CarroService service;
