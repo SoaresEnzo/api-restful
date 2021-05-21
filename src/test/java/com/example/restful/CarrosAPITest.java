@@ -15,8 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestfulApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
