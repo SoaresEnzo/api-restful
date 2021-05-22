@@ -6,3 +6,4 @@ Ao fim do projeto, o repositório cobrirá conhecimentos de vários conceitos, i
 - Java
 - Spring Boot
 - JPA
+- JUnit
