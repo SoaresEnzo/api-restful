@@ -8,7 +8,7 @@ Ao fim do projeto, o repositório cobrirá conhecimentos de vários conceitos, i
 - JPA
 - JUnit
 
-#Se autenticando na API
+# Se autenticando na API
 Tendo o MySQL na sua máquina, importe o arquivo .sql em "/database" para importar os roles de acesso e alguns usuários padrões.
 Por padrão existem os acessos de login "admin" e "user", ambos com senha "123".
 
