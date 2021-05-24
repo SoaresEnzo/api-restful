@@ -5,6 +5,7 @@ import com.example.restful.domain.CarroService;
 import com.example.restful.domain.dto.CarroDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -16,6 +17,14 @@ import java.util.List;
 public class CarrosController {
     @Autowired
     private CarroService service;
+
+    private URI getURI(Long id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+    }
 
     @GetMapping()
     public ResponseEntity<List<CarroDTO>> get() {
@@ -41,6 +50,7 @@ public class CarrosController {
     }
 
     @PostMapping()
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity postCarro(@RequestBody Carro carro) {
 
             CarroDTO c = service.insert(carro);
@@ -51,15 +61,8 @@ public class CarrosController {
 
     }
 
-    private URI getURI(Long id) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-    }
-
     @PutMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity putCarro(@RequestBody Carro carro, @PathVariable("id") Long id) {
         CarroDTO c = service.update(carro, id);
         return c != null ?
@@ -68,6 +71,7 @@ public class CarrosController {
     }
 
     @DeleteMapping("/{id}")
+    @Secured({"ROLE_ADMIN"})
     public ResponseEntity deleteCarro(@PathVariable("id") Long id) {
 
         service.delete(id);

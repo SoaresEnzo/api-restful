@@ -15,7 +15,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import static junit.framework.TestCase.*;
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = RestfulApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -25,25 +26,28 @@ public class CarrosAPITest {
     protected TestRestTemplate rest;
 
     private ResponseEntity<CarroDTO> getCarro(String url) {
-        return rest.getForEntity(url, CarroDTO.class);
+        return rest.withBasicAuth("admin", "123").getForEntity(url, CarroDTO.class);
     }
 
     private ResponseEntity<List<CarroDTO>> getCarros(String url) {
-        return rest.exchange(
+        return rest.withBasicAuth("admin", "123").exchange(
                 url,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<CarroDTO>>(){});
+                new ParameterizedTypeReference<List<CarroDTO>>() {
+                });
     }
 
     @Test
-    public void testSave(){
+    public void testSave() {
         Carro carro = new Carro();
         carro.setNome("Porsche");
         carro.setTipo("esportivos");
 
         //Insert
-        ResponseEntity response = rest.postForEntity("/api/v1/carros", carro, null);
+        ResponseEntity response = rest
+                .withBasicAuth("admin", "123")
+                .postForEntity("/api/v1/carros", carro, null);
         System.out.println(response);
 
         //Verifica se criou
@@ -58,7 +62,9 @@ public class CarrosAPITest {
         assertEquals("esportivos", c.getTipo());
 
         //Deletar o carro
-        rest.delete(location);
+        rest
+                .withBasicAuth("admin", "123")
+                .delete(location);
 
         //Verificar se deletou
         assertEquals(HttpStatus.NOT_FOUND, getCarro(location).getStatusCode());
@@ -82,20 +88,20 @@ public class CarrosAPITest {
     }
 
     @Test
-    public void tesGetOk() {
+    public void testGetOk() {
 
         ResponseEntity<CarroDTO> response = getCarro("/api/v1/carros/11");
-        assertEquals(response.getStatusCode(),HttpStatus.OK);
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
 
         CarroDTO c = response.getBody();
         assertEquals("Ferrari FF", c.getNome());
     }
 
     @Test
-    public void tesGetNotFound() {
+    public void testGetNotFound() {
 
         ResponseEntity<CarroDTO> response = getCarro("/api/v1/carros/1100");
-        assertEquals(response.getStatusCode(),HttpStatus.NOT_FOUND);
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
     }
 
 }
